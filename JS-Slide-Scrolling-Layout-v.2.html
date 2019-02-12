@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Slide Scrolling Layout</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<style type="text/css">
+		body {
+			width: 100%;
+			margin: 0 auto;
+			padding: 0;
+			background-color: #000;
+		}
+		a {
+			text-decoration: none;
+		}
+		#wrapper {
+			margin: 6px 0;
+			width: 98.1vw;
+		}
+		.side-scroll-body-wrapper {
+			display: flex;
+			overflow: hidden;
+			position: relative;
+		}
+		.side-scroll-body {
+			display: flex;
+			overflow: auto;
+		}
+		.img-containers {
+			margin: 2px 4px;
+		}
+		.gallery-img {
+			/*width: 300px;*/
+			/*Decided that 323px is the best overall size maybe?*/
+			width: 323px;
+			height: auto;
+		}
+		.see-more {
+			font-family: sans-serif;
+			font-weight: bolder;
+			font-size: 23px;
+			margin-top: 127px;
+			margin-left: 32px;
+			padding-right: 55px;
+		}
+	</style>
+</head>
+<body>
+	<div id="wrapper"></div>
+
+	<script type="text/javascript">
+
+//                     ########   Usage Instructions   ########
+
+// If you do not want to use a base URL just make it an empty string. ( example): var baseImgUrl = '';
+// The number of image URLs and the number of Link URLs must match.
+// Also the number of image URLs and the number of Link URLs must be evenly divisible by the number 6.
+// For every 6 image URLs and Link urls you will need one seeMoreLinks URL.
+
+// If you do not want your images to have links, comment out the following two lines below like this:
+// 	<!-- <a href="${ baseImgLinkUrl }${ imgLinkUrls[i] }" class="gallery-img-links"> -->
+// 		<img class="gallery-img" src="${ baseImgUrl }${ imgUrls[i] }">
+// 	<!-- </a> -->
+
+var baseImgUrl = 'https://www.pdrfinessetools.com/image/cache/';
+
+var baseImgLinkUrl = 'https://www.pdrfinessetools.com/';
+
+var baseSeeMoreLinks = 'https://www.pdrfinessetools.com/';
+
+var imgUrlsList = `
+catalog/030-040/36-Best-Seller-640x640.jpg
+catalog/Finesse-Sets/mtset5-Best-Seller-640x640.jpg
+catalog/Hammers-and-Knockdowns/hammer-wooden-blending-640x640.jpg
+catalog/220-240/226L-Best-Seller-640x640.jpg
+catalog/Hammers-and-Knockdowns/Wood-Paddle-Best-Seller-640x640.jpg
+catalog/030-040/31-Best-Seller-640x640.jpg
+catalog/HoodStands-and-Carts/finesse-table-hood-stand-new-640x640.jpg
+catalog/Finesse-Sets/Bushwackers-640x640.jpg
+catalog/040-050/41a-dtl1-640x640.jpg
+catalog/Finesse-Sets/Ultimate-Door-Tool-Pair-640x640.jpg
+catalog/HoodStands-and-Carts/leverage-bar-640x640.jpg
+catalog/030-040/36s-640x640.jpg
+catalog/Hammers-and-Knockdowns/aluminum-knockdown-640x640.jpg
+catalog/Accessories/Stuckey-Talon-Window-Wedge-640x640.jpg
+catalog/Finesse-Sets/Bushwackers-640x640.jpg
+catalog/300-320/305-Special-640x640.jpg
+catalog/jason_added/new-2019/193mrs-640x640.jpg
+catalog/jason_added/Sets/set-Clinton-Kidder-640x640.jpg
+catalog/White-Lightning-800px-640x640.jpg
+catalog/Glue_Products/Glue-Pulling-Tools/Chrome-Slide-Hammer-640x640.jpg
+catalog/Glue_Products/PJ-TIP_Variety-640x640.jpg
+catalog/tools%20fall%202012/Jerry%20Powell%20Set-640x640.jpg
+catalog/Finesse-Sets/John-Highley-Tactical-19pc-640x640.jpg
+catalog/Finesse-Sets/John-Highley-Tactical-58pc-set-640x640.jpg
+catalog/jason_added/570px_MARK%20TSURKIS%20SET%201_with_new_hammer-640x640.jpg
+catalog/new%20tools/Ike%20Rhoades%20Sig%20series%20set%2040%20pcs-640x640.jpg
+catalog/tbwtset-640x640.jpg
+catalog/jason_added/new2018/aks600px-640x640.jpg
+catalog/new%20tools/door%20tool%20set-640x640.jpg
+catalog/new%20tools/Starter%20set-640x640.jpg
+catalog/tools%20fall%202012/6%20wt%20set%20(2)-640x640.JPG
+catalog/new%20tools/tripick%20trio-640x640.JPG
+catalog/tools%20fall%202012/30%20wt%20(8)-640x640.JPG
+catalog/jason_added/fold-n-go_tool_cart/fold_n_go_thumbnail-640x640.JPG
+catalog/jason_added/lights/battery-light/bat-lit-2-640x640.jpg
+catalog/jason_added/lights/Eagle-Eyes-2-640x640.jpg
+`;
+
+var imgLinkUrlsList = `
+Finesse?product_id=125
+Finesse?product_id=352 
+Finesse?product_id=415
+Finesse?product_id=485
+Finesse?product_id=462
+Finesse?product_id=244
+Finesse?product_id=475
+Finesse?product_id=602
+Finesse?product_id=101
+Finesse?product_id=356
+Finesse?product_id=505
+Finesse?product_id=296
+Hammers-and-Knockdowns/kd-aluminum
+wedge-Stuckey
+BUSHWACKERS
+Finesse?product_id=601
+Finesse?product_id=595 
+Finesse?product_id=594
+Finesse?product_id=583
+Assorted?product_id=565
+Assorted?product_id=544
+Finesse?product_id=49
+Finesse?product_id=569
+Finesse?product_id=568
+Finesse?product_id=200
+Finesse?product_id=103
+Finesse?product_id=199
+Finesse?product_id=575
+Finesse?product_id=419
+Finesse?product_id=243
+Finesse?product_id=358
+Sets/triset
+Sets/28whailtailset
+Finesse?product_id=547
+Finesse?product_id=562
+Finesse?product_id=561
+`;
+
+var seeMoreLinksList = `
+index.php?route=extension/list/bestseller
+index.php?route=extension/list/featured
+index.php?route=extension/list/latest
+Sets
+Carts%20and%20Stands/Hood-Stands
+tool-wall
+`;
+
+// Converts the "template string" lists of URLs into normal JavaScript arrays.
+var imgUrlsListSplit = imgUrlsList.split('\n');
+var imgUrls = imgUrlsListSplit.slice(1, imgUrlsListSplit.length - 1);
+
+var imgLinkUrlsListSplit = imgLinkUrlsList.split('\n');
+var imgLinkUrls = imgLinkUrlsListSplit.slice(1, imgLinkUrlsListSplit.length - 1);
+
+var seeMoreLinksListSplit = seeMoreLinksList.split('\n');
+var seeMoreLinks = seeMoreLinksListSplit.slice(1, seeMoreLinksListSplit.length - 1);
+
+		var sideScrollTemplate = '';
+
+		for (var i = 0; i <= imgUrls.length; i++) {
+			if (i % 6 === 0) {
+				if(i !== 0) {
+					if(i !== imgUrls.length) {
+			        	sideScrollTemplate += `
+						        <div class="see-more">
+									<a href="${ baseSeeMoreLinks }${ seeMoreLinks[i / 6 - 1] }"><pre>See More...</pre></a>
+								</div>
+							</div>
+						</div>`;
+					}
+				}
+		    }
+
+			if (i % 6 === 0) {
+				if(i !== imgUrls.length) {
+			        sideScrollTemplate += `
+			        	<div class="side-scroll-body-wrapper">
+							<div class="side-scroll-body">`;
+				}
+		    }
+
+		    if(i !== imgUrls.length) {
+				sideScrollTemplate += `
+								<div class="img-containers">
+									<a href="${ baseImgLinkUrl }${ imgLinkUrls[i] }" class="gallery-img-links">
+										<img class="gallery-img" src="${ baseImgUrl }${ imgUrls[i] }">
+									</a>
+								</div>`;
+			}
+
+			if (i === imgUrls.length) {
+		        sideScrollTemplate += `
+						        <div class="see-more">
+									<a href="${ baseSeeMoreLinks }${ seeMoreLinks[i / 6 - 1] }"><pre>See More...</pre></a>
+								</div>
+							</div>
+						</div>`;
+		    }							
+		}
+		// console.log(sideScrollTemplate);
+		var wrapper = document.getElementById("wrapper");
+		wrapper.innerHTML = sideScrollTemplate;
+	</script>
+</body>
+</html>
